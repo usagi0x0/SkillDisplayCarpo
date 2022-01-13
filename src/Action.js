@@ -85,17 +85,32 @@ export default function Action({ actionId, additionalClasses }) {
 	if (apiData === undefined || !apiData.Icon) {
 		return null
 	}
+    try {
+		return (
+			<img
+				className={
+					gcdOverrides.has(actionId) ||
+					(!ogcdOverrides.has(actionId) && apiData.ActionCategoryTargetID !== 4)
+						? `gcd ${additionalClasses}`
+						: `ogcd ${additionalClasses}`
+				}
+				src={require(`.${apiData.Icon}`)}
+				alt={apiData.Name || ""}
+			/>
+		)
+	} catch (error) {
+		return (
+			<img
+				className={
+					gcdOverrides.has(actionId) ||
+					(!ogcdOverrides.has(actionId) && apiData.ActionCategoryTargetID !== 4)
+						? `gcd ${additionalClasses}`
+						: `ogcd ${additionalClasses}`
+				}
+				src={`https://xivapi.com/${apiData.Icon}`}
+				alt={apiData.Name || ""}
+			/>
+		)
+	}
 
-	return (
-		<img
-			className={
-				gcdOverrides.has(actionId) ||
-				(!ogcdOverrides.has(actionId) && apiData.ActionCategoryTargetID !== 4)
-					? `gcd ${additionalClasses}`
-					: `ogcd ${additionalClasses}`
-			}
-			src={`https://xivapi.com/${apiData.Icon}`}
-			alt={apiData.Name || ""}
-		/>
-	)
 }
